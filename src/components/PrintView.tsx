@@ -77,9 +77,6 @@ const PrintView: React.FC = () => {
               <div>
                 <h1 style={{ color: 'var(--primary-dark)', margin: 0, fontSize: '1.3rem' }}>Sagar Fisheries</h1>
                 <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.8rem' }}>Premium Prawns &amp; Seafood</p>
-                <p style={{ color: 'var(--text-secondary)', margin: '0.1rem 0 0 0', fontSize: '0.78rem' }}>
-                  Jathapeth, Akola, Maharashtra - 444001 &nbsp;|&nbsp; Mob: 9823677883
-                </p>
               </div>
             </div>
             <div className="text-right">
@@ -174,18 +171,21 @@ const PrintView: React.FC = () => {
             <div style={{ textAlign: 'center' }}>
               <p style={{ margin: '0 0 0.3rem 0', fontWeight: 500, fontSize: '0.78rem', color: 'var(--text-primary)' }}>For Sagar Fisheries</p>
               <div style={{
-                height: '60px',
-                border: '1px dashed var(--border)',
-                borderRadius: 'var(--radius-md)',
+                width: '70px',
+                height: '70px',
+                border: '2px dashed var(--border)',
+                borderRadius: '50%',
                 marginBottom: '0.3rem',
+                marginLeft: 'auto',
+                marginRight: 'auto',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 color: 'var(--text-secondary)',
-                fontSize: '0.72rem',
+                fontSize: '0.65rem',
                 backgroundColor: 'var(--primary-light)',
               }}>
-                Stamp / Signature
+                Stamp
               </div>
               <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Authorized Signatory</p>
             </div>
