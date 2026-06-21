@@ -6,6 +6,11 @@ import { Plus, Minus } from 'lucide-react';
 
 const CATEGORIES = ['Scampi U3', 'Scampi U5', 'Scampi U7', 'Scampi U10', 'Scampi U15', 'Scampi U20', 'Peeling', 'M Peeling'];
 
+const getLocalDatetimeString = (date: Date): string => {
+  const tzoffset = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() - tzoffset).toISOString().slice(0, 16);
+};
+
 const NewBill: React.FC = () => {
   const { addBill, bills } = useBilling();
   const navigate = useNavigate();
@@ -46,7 +51,7 @@ const NewBill: React.FC = () => {
     const nextNum = bills.length + 1;
     setBillNumber(`SF-${nextNum.toString().padStart(3, '0')}`);
     const now = new Date();
-    setDate(now.toLocaleString());
+    setDate(getLocalDatetimeString(now));
   }, [bills.length]);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -71,10 +76,12 @@ const NewBill: React.FC = () => {
       amount: (item.weight as number) * (item.rate as number)
     }));
 
+    const formattedDate = date ? new Date(date).toLocaleString() : new Date().toLocaleString();
+
     const newBill: Bill = {
       id: Date.now().toString(),
       billNumber,
-      date,
+      date: formattedDate,
       purchasedFrom,
       items: processedItems,
       amount,
@@ -100,7 +107,7 @@ const NewBill: React.FC = () => {
     
     // Generate new date (billNumber updates via useEffect)
     const now = new Date();
-    setDate(now.toLocaleString());
+    setDate(getLocalDatetimeString(now));
   };
 
   return (
@@ -118,7 +125,12 @@ const NewBill: React.FC = () => {
           </div>
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>Date & Time</label>
-            <input type="text" value={date} disabled />
+            <input 
+              type="datetime-local" 
+              value={date} 
+              onChange={e => setDate(e.target.value)} 
+              required 
+            />
           </div>
         </div>
 

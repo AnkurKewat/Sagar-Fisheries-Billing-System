@@ -54,6 +54,7 @@ input[type="text"],
 input[type="number"],
 input[type="password"],
 input[type="date"],
+input[type="datetime-local"],
 select {
   width: 100%;
   padding: 0.6rem 0.75rem;
@@ -250,6 +251,11 @@ tbody tr:hover {
 
 /* Print Styles */
 @media print {
+  @page {
+    size: A4;
+    margin: 10mm 12mm;
+  }
+
   .sidebar, .top-header, .no-print {
     display: none !important;
   }
@@ -266,10 +272,25 @@ tbody tr:hover {
   }
   body {
     background-color: white;
+    font-size: 11px;
   }
   .card {
     border: none;
     box-shadow: none;
+  }
+  .print-invoice {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    page-break-inside: avoid;
+  }
+  .print-invoice-body {
+    padding: 0 !important;
+  }
+  tbody tr:hover {
+    background-color: transparent !important;
   }
 }
 

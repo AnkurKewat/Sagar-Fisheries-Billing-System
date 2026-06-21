@@ -23,9 +23,39 @@ const PrintView: React.FC = () => {
     window.print();
   };
 
-  const totalWeight = bill.items && bill.items.length > 0 
+  // Format date as DD/MM/YYYY
+  const formatDisplayDate = (dateStr: string): string => {
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) {
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
+    }
+    return dateStr;
+  };
+
+  const totalWeight = bill.items && bill.items.length > 0
     ? bill.items.reduce((sum, item) => sum + item.weight, 0)
     : (bill.weight || 0);
+
+  // Explicit 4-sided borders so column lines always render
+  const cellBorder = '1px solid #bae6fd';
+  const tdStyle: React.CSSProperties = {
+    padding: '0.35rem 0.6rem',
+    border: cellBorder,
+    fontSize: '0.875rem',
+  };
+
+  const thStyle: React.CSSProperties = {
+    padding: '0.4rem 0.6rem',
+    border: cellBorder,
+    fontSize: '0.8rem',
+    textTransform: 'uppercase' as const,
+    letterSpacing: '0.03em',
+    backgroundColor: 'var(--primary-light)',
+    color: 'var(--primary-dark)',
+  };
 
   return (
     <div>
@@ -38,108 +68,133 @@ const PrintView: React.FC = () => {
         </button>
       </div>
 
-      <div className="card" style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: 'white' }}>
-        <div className="card-body" style={{ padding: '3rem' }}>
-          
-          {/* Header */}
-          <div className="flex-between" style={{ borderBottom: '2px solid var(--border)', paddingBottom: '1.5rem', marginBottom: '1.5rem' }}>
-            <div className="flex-row">
-              <Anchor size={40} color="var(--primary)" />
+      <div className="card print-invoice" style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: 'white' }}>
+        <div className="card-body print-invoice-body" style={{ padding: '1.5rem' }}>
+
+          <div className="flex-between" style={{ borderBottom: '2px solid var(--border)', paddingBottom: '0.75rem', marginBottom: '0.75rem' }}>
+            <div className="flex-row" style={{ gap: '0.6rem' }}>
+              <Anchor size={32} color="var(--primary)" />
               <div>
-                <h1 style={{ color: 'var(--primary-dark)', margin: 0 }}>Sagar Fishers</h1>
-                <p style={{ color: 'var(--text-secondary)', margin: 0 }}>Premium Prawns & Seafood</p>
-                <p style={{ color: 'var(--text-secondary)', margin: '0.25rem 0 0 0', fontSize: '0.875rem' }}>
-                  Jathapeth, Akola, Maharashtra - 444001<br/>
-                  Mob: 9823677883
+                <h1 style={{ color: 'var(--primary-dark)', margin: 0, fontSize: '1.3rem' }}>Sagar Fisheries</h1>
+                <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.8rem' }}>Premium Prawns &amp; Seafood</p>
+                <p style={{ color: 'var(--text-secondary)', margin: '0.1rem 0 0 0', fontSize: '0.78rem' }}>
+                  Jathapeth, Akola, Maharashtra - 444001 &nbsp;|&nbsp; Mob: 9823677883
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <h2 style={{ color: 'var(--text-secondary)', margin: 0 }}>INVOICE</h2>
-              <p style={{ margin: 0, fontWeight: 500 }}>{bill.billNumber}</p>
-              <p style={{ margin: 0, color: 'var(--text-secondary)' }}>{bill.date}</p>
+              <h2 style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '1.1rem' }}>INVOICE</h2>
+              <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem' }}>{bill.billNumber}</p>
+              <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.8rem' }}>{formatDisplayDate(bill.date)}</p>
             </div>
           </div>
 
-          {/* Parties */}
-          <div className="mb-4">
-            <div>
-              <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.875rem' }}>Purchased From:</p>
-              <h3 style={{ margin: '0.25rem 0' }}>{bill.purchasedFrom}</h3>
-            </div>
+          <div style={{ marginBottom: '0.6rem' }}>
+            <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '0.75rem' }}>Purchased From:</p>
+            <h3 style={{ margin: '0.1rem 0 0 0', fontSize: '1rem' }}>{bill.purchasedFrom}</h3>
           </div>
 
-          {/* Items Table */}
-          <table style={{ width: '100%', marginBottom: '2rem', border: '1px solid var(--border)' }}>
+          <table style={{ width: '100%', marginBottom: '0.75rem', borderCollapse: 'collapse', border: cellBorder }}>
             <thead>
-              <tr style={{ backgroundColor: 'var(--primary-light)' }}>
-                <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>Description / Category</th>
-                <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>Weight (kg)</th>
-                <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>Rate (₹)</th>
-                <th style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>Amount (₹)</th>
+              <tr>
+                <th style={{ ...thStyle, textAlign: 'center', width: '60px' }}>No.</th>
+                <th style={{ ...thStyle, textAlign: 'left' }}>Description / Category</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Weight (kg)</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Rate (Rs/kg)</th>
+                <th style={{ ...thStyle, textAlign: 'right' }}>Amount (Rs)</th>
               </tr>
             </thead>
             <tbody>
               {bill.items && bill.items.length > 0 ? (
                 bill.items.map((item, index) => (
                   <tr key={item.id || index}>
-                    <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>{item.category}</td>
-                    <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>{item.weight}</td>
-                    <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>{item.rate.toLocaleString()}</td>
-                    <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right', fontWeight: 500 }}>{item.amount.toLocaleString()}</td>
+                    <td style={{ ...tdStyle, textAlign: 'center' }}>{index + 1}</td>
+                    <td style={{ ...tdStyle }}>{item.category}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{item.weight}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right' }}>{item.rate.toLocaleString()}</td>
+                    <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 500 }}>{item.amount.toLocaleString()}</td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)' }}>{bill.category || 'N/A'}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>{bill.weight || 0}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right' }}>{bill.rate ? bill.rate.toLocaleString() : '0'}</td>
-                  <td style={{ padding: '0.75rem', borderBottom: '1px solid var(--border)', textAlign: 'right', fontWeight: 500 }}>{bill.amount.toLocaleString()}</td>
+                  <td style={{ ...tdStyle, textAlign: 'center' }}>1</td>
+                  <td style={{ ...tdStyle }}>{bill.category || 'N/A'}</td>
+                  <td style={{ ...tdStyle, textAlign: 'right' }}>{bill.weight || 0}</td>
+                  <td style={{ ...tdStyle, textAlign: 'right' }}>{bill.rate ? bill.rate.toLocaleString() : '0'}</td>
+                  <td style={{ ...tdStyle, textAlign: 'right', fontWeight: 500 }}>{bill.amount.toLocaleString()}</td>
                 </tr>
               )}
             </tbody>
+            <tfoot>
+              <tr style={{ backgroundColor: '#f0f9ff', fontWeight: 700 }}>
+                <td style={{ ...tdStyle, textAlign: 'center', fontSize: '0.82rem' }} colSpan={2}>TOTAL</td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>{totalWeight.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style={{ ...tdStyle }}></td>
+                <td style={{ ...tdStyle, textAlign: 'right' }}>Rs {bill.amount.toLocaleString()}</td>
+              </tr>
+            </tfoot>
           </table>
 
-          {/* Footer Info */}
-          <div className="grid-2">
-            <div>
-              <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Export Details:</p>
-              <p style={{ fontWeight: 500, margin: '0.25rem 0' }}>
-                {bill.transportType ? `${bill.transportType} - ${bill.transportNumber}` : 'N/A'}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1.4fr 1fr', gap: '1rem', alignItems: 'start', marginTop: '0.5rem' }}>
+
+            <div style={{ fontSize: '0.82rem' }}>
+              <p style={{ margin: '0 0 0.15rem 0', color: 'var(--text-secondary)' }}>Export Details:</p>
+              <p style={{ fontWeight: 500, margin: '0 0 0.5rem 0' }}>
+                {bill.transportType ? bill.transportType + ' - ' + bill.transportNumber : 'N/A'}
               </p>
-              <p style={{ marginTop: '1rem', color: 'var(--text-secondary)', fontSize: '0.875rem' }}>Payment Method:</p>
-              <p style={{ fontWeight: 500 }}>
+              <p style={{ margin: '0 0 0.15rem 0', color: 'var(--text-secondary)' }}>Payment Method:</p>
+              <p style={{ fontWeight: 500, margin: 0 }}>
                 {bill.paymentMethod || 'N/A'}
-                {bill.paymentMethod === 'Cheque' && bill.paymentReference && ` (Chq No: ${bill.paymentReference})`}
-                {bill.paymentMethod === 'Online' && bill.paymentReference && ` (Txn ID: ${bill.paymentReference})`}
+                {bill.paymentMethod === 'Cheque' && bill.paymentReference && ' (Chq: ' + bill.paymentReference + ')'}
+                {bill.paymentMethod === 'Online' && bill.paymentReference && ' (Txn: ' + bill.paymentReference + ')'}
               </p>
             </div>
-            
-            <div>
-              <div className="flex-between mb-2">
+
+            <div style={{ fontSize: '0.82rem', borderLeft: '1px solid var(--border)', paddingLeft: '0.75rem' }}>
+              <div className="flex-between" style={{ marginBottom: '0.25rem' }}>
                 <span style={{ color: 'var(--text-secondary)' }}>Total Weight:</span>
-                <span style={{ fontWeight: 600, fontSize: '1.1rem' }}>{totalWeight.toLocaleString()} kg</span>
+                <span style={{ fontWeight: 600 }}>{totalWeight.toLocaleString()} kg</span>
               </div>
-              <div className="flex-between mb-2">
+              <div className="flex-between" style={{ marginBottom: '0.25rem' }}>
                 <span style={{ color: 'var(--text-secondary)' }}>Total Amount:</span>
-                <span style={{ fontWeight: 600, fontSize: '1.1rem' }}>₹{bill.amount.toLocaleString()}</span>
+                <span style={{ fontWeight: 600 }}>Rs {bill.amount.toLocaleString()}</span>
               </div>
-              <div className="flex-between mb-2">
-                <span style={{ color: 'var(--text-secondary)' }}>Amount Deposited:</span>
-                <span>₹{bill.amountDeposited.toLocaleString()}</span>
+              <div className="flex-between" style={{ marginBottom: '0.25rem' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Deposited:</span>
+                <span>Rs {bill.amountDeposited.toLocaleString()}</span>
               </div>
-              <div className="flex-between pt-2" style={{ borderTop: '1px solid var(--border)' }}>
-                <span style={{ fontWeight: 600 }}>Pending Balance:</span>
-                <span style={{ fontWeight: 700, fontSize: '1.25rem', color: bill.pendingAmount > 0 ? 'var(--error)' : 'var(--success)' }}>
-                  ₹{bill.pendingAmount.toLocaleString()}
+              <div className="flex-between" style={{ borderTop: '1px solid var(--border)', paddingTop: '0.25rem', marginTop: '0.25rem' }}>
+                <span style={{ fontWeight: 600 }}>Pending:</span>
+                <span style={{ fontWeight: 700, fontSize: '1rem', color: bill.pendingAmount > 0 ? 'var(--error)' : 'var(--success)' }}>
+                  Rs {bill.pendingAmount.toLocaleString()}
                 </span>
               </div>
             </div>
+
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ margin: '0 0 0.3rem 0', fontWeight: 500, fontSize: '0.78rem', color: 'var(--text-primary)' }}>For Sagar Fisheries</p>
+              <div style={{
+                height: '60px',
+                border: '1px dashed var(--border)',
+                borderRadius: 'var(--radius-md)',
+                marginBottom: '0.3rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--text-secondary)',
+                fontSize: '0.72rem',
+                backgroundColor: 'var(--primary-light)',
+              }}>
+                Stamp / Signature
+              </div>
+              <p style={{ margin: 0, fontSize: '0.72rem', color: 'var(--text-secondary)' }}>Authorized Signatory</p>
+            </div>
           </div>
 
-          <div style={{ marginTop: '4rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.875rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
-            <p>Thank you for your business with Sagar Fishers.</p>
+          <div style={{ marginTop: '0.75rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.75rem', borderTop: '1px solid var(--border)', paddingTop: '0.5rem' }}>
+            <p style={{ margin: 0 }}>Thank you for your business with Sagar Fisheries.</p>
           </div>
+
         </div>
       </div>
     </div>

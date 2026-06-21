@@ -93,7 +93,7 @@ const DailyReportPrint: React.FC = () => {
             <div className="flex-row">
               <Anchor size={40} color="var(--primary)" />
               <div>
-                <h1 style={{ color: 'var(--primary-dark)', margin: 0 }}>Sagar Fishers</h1>
+                <h1 style={{ color: 'var(--primary-dark)', margin: 0 }}>Sagar Fisheries</h1>
                 <p style={{ color: 'var(--text-secondary)', margin: 0, fontWeight: 500 }}>Premium Prawns & Seafood</p>
                 <p style={{ color: 'var(--text-secondary)', margin: '0.25rem 0 0 0', fontSize: '0.875rem' }}>
                   Jathapeth, Akola, Maharashtra - 444001<br/>
@@ -280,7 +280,7 @@ const DailyReportPrint: React.FC = () => {
 
           {/* Footer Info */}
           <div style={{ marginTop: '4rem', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.85rem', borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
-            <p>Sagar Fishers – End of Daily Sales & Billing Report for {date ? formatBillDate(date) : ''}</p>
+            <p>Sagar Fisheries – End of Daily Sales & Billing Report for {date ? formatBillDate(date) : ''}</p>
           </div>
 
         </div>

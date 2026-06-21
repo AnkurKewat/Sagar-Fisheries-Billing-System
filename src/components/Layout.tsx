@@ -17,7 +17,7 @@ const Layout: React.FC = () => {
       <aside className="sidebar">
         <div className="sidebar-header">
           <Anchor size={28} color="var(--accent)" />
-          <span>Sagar Fishers</span>
+          <span>Sagar Fisheries</span>
         </div>
         <nav className="sidebar-nav">
           <NavLink to="/dashboard" className={({isActive}) => isActive ? "nav-item active" : "nav-item"} end>
@@ -47,7 +47,7 @@ const Layout: React.FC = () => {
 
       <main className="main-content">
         <header className="top-header">
-          <h2>Sagar Fishers – Prawns Billing System</h2>
+          <h2>Sagar Fisheries – Prawns Billing System</h2>
           <div className="flex-row">
             <span style={{ fontWeight: 500, color: 'var(--text-secondary)' }}>Admin User</span>
           </div>

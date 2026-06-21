@@ -24,7 +24,7 @@ const Login: React.FC = () => {
       <div className="card" style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
         <div className="text-center mb-4">
           <Anchor size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
-          <h2>Sagar Fishers</h2>
+          <h2>Sagar Fisheries</h2>
           <p style={{ color: 'var(--text-secondary)' }}>Owner Login</p>
         </div>
         
