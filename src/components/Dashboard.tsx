@@ -1,6 +1,6 @@
 import React from 'react';
 import { useBilling } from '../context/BillingContext';
-import { IndianRupee, FileText, Anchor } from 'lucide-react';
+import { IndianRupee, FileText, Anchor, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
@@ -56,25 +56,34 @@ const Dashboard: React.FC = () => {
         <div className="card-header">
           <h3>Quick Actions</h3>
         </div>
-        <div className="card-body grid-2">
+        <div className="card-body grid-3">
           <Link to="/dashboard/new-bill" style={{ textDecoration: 'none' }}>
             <div style={{ padding: '2rem', border: '1px dashed var(--primary)', borderRadius: 'var(--radius-md)', textAlign: 'center', transition: 'all 0.2s ease', cursor: 'pointer' }} className="hover-bg-primary-light">
               <FileText size={32} color="var(--primary)" style={{ marginBottom: '1rem' }} />
               <h3 style={{ color: 'var(--primary)' }}>Create New Bill</h3>
-              <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Generate a new prawn invoice</p>
+              <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Generate a new prawns invoice</p>
             </div>
           </Link>
           <Link to="/dashboard/records" style={{ textDecoration: 'none' }}>
-            <div style={{ padding: '2rem', border: '1px dashed var(--secondary)', borderRadius: 'var(--radius-md)', textAlign: 'center', transition: 'all 0.2s ease', cursor: 'pointer' }}>
+            <div style={{ padding: '2rem', border: '1px dashed var(--secondary)', borderRadius: 'var(--radius-md)', textAlign: 'center', transition: 'all 0.2s ease', cursor: 'pointer' }} className="hover-bg-secondary-light">
               <Anchor size={32} color="var(--secondary)" style={{ marginBottom: '1rem' }} />
               <h3 style={{ color: 'var(--secondary)' }}>View Records</h3>
               <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>Search and print past invoices</p>
+            </div>
+          </Link>
+          <Link to="/dashboard/reports" style={{ textDecoration: 'none' }}>
+            <div style={{ padding: '2rem', border: '1px dashed var(--success)', borderRadius: 'var(--radius-md)', textAlign: 'center', transition: 'all 0.2s ease', cursor: 'pointer' }} className="hover-bg-success-light">
+              <TrendingUp size={32} color="var(--success)" style={{ marginBottom: '1rem' }} />
+              <h3 style={{ color: 'var(--success)' }}>Sales Reports</h3>
+              <p style={{ color: 'var(--text-secondary)', marginTop: '0.5rem' }}>View daily sales & save PDFs</p>
             </div>
           </Link>
         </div>
       </div>
       <style dangerouslySetInnerHTML={{__html: `
         .hover-bg-primary-light:hover { background-color: var(--primary-light); }
+        .hover-bg-secondary-light:hover { background-color: #f0f9ff; }
+        .hover-bg-success-light:hover { background-color: #ecfdf5; }
       `}} />
     </div>
   );

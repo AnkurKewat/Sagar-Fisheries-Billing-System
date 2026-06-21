@@ -8,6 +8,8 @@ import Dashboard from './components/Dashboard';
 import NewBill from './components/NewBill';
 import Records from './components/Records';
 import PrintView from './components/PrintView';
+import Reports from './components/Reports';
+import DailyReportPrint from './components/DailyReportPrint';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useBilling();
@@ -33,6 +35,8 @@ const AppRoutes = () => {
         <Route path="new-bill" element={<NewBill />} />
         <Route path="records" element={<Records />} />
         <Route path="print/:id" element={<PrintView />} />
+        <Route path="reports" element={<Reports />} />
+        <Route path="daily-report/:date" element={<DailyReportPrint />} />
       </Route>
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>

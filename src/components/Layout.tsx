@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Anchor, LayoutDashboard, FileText, List, LogOut } from 'lucide-react';
+import { Anchor, LayoutDashboard, FileText, List, LogOut, TrendingUp } from 'lucide-react';
 import { useBilling } from '../context/BillingContext';
 
 const Layout: React.FC = () => {
@@ -31,6 +31,10 @@ const Layout: React.FC = () => {
           <NavLink to="/dashboard/records" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
             <List size={20} />
             Records
+          </NavLink>
+          <NavLink to="/dashboard/reports" className={({isActive}) => isActive ? "nav-item active" : "nav-item"}>
+            <TrendingUp size={20} />
+            Sales Reports
           </NavLink>
         </nav>
         <div style={{ padding: '1.5rem' }}>

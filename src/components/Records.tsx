@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useBilling } from '../context/BillingContext';
 import { Printer, Search, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getBillDateKey } from './Reports';
 
 const Records: React.FC = () => {
   const { bills } = useBilling();
@@ -15,8 +16,8 @@ const Records: React.FC = () => {
       bill.billNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
       bill.purchasedFrom.toLowerCase().includes(searchTerm.toLowerCase());
     
-    // dateFilter matches the date if set
-    const matchesDate = dateFilter ? bill.date.includes(dateFilter) : true;
+    // Use standardized date comparison
+    const matchesDate = dateFilter ? getBillDateKey(bill.date) === dateFilter : true;
 
     return matchesSearch && matchesDate;
   });
